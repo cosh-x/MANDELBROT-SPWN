@@ -19,6 +19,4 @@ for n in 0..99 {
         }
     }
 }
-//that's pretty much it
-//see ya
 //not single group for every block, just add block to matching max iteration group id, then color that
