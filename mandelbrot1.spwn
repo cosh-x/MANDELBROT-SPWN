@@ -1,0 +1,24 @@
+//SPWN script that converts the mandelbrot fractal to a geometry dash level
+for n in 0..99 {
+    let x = 1 + n
+    for k in 0..99 {
+        let y = 1 + k
+        let c = complex((-2 + (2.4 / 98) * n), (1.2 - (2.4 / 98) * k))
+        let z = 0
+        //add pixel block to position (X, 100 - Y) with group XXYY and group 1
+        for i in 1..12 {
+            if z.abs > 2 {       
+                //color group XXYY white
+                //end the for loop (idk how)
+            }
+            if i == 11{
+                //color group XXYY black
+                //end the for loop (f*ck that 11th iteration in particular)
+            }
+            z = z^2 + c
+        }
+    }
+}
+//that's pretty much it
+//see ya
+//not single group for every block, just add block to matching max iteration group id, then color that
