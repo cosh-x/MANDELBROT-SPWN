@@ -1,36 +1,42 @@
-//SPWN Script that converts the Mandelbrot fractal to a Geometry Dash level, made by Cosh_X
-//All the pixels are colored after the number of iterations that z takes to diverge past the value 2
-//Every pixel also is in group 999 if you want to add any extra effects
+//SPWN Script that converts the Mandelbrot fractal to a Geometry Dash level, made by Cosh-X
+//All the pixels are colored after the number of iterations that z takes to diverge past the value of 2
+//Every pixel is also in group 999 if you want to add any extra effects
+
+//Idea: If 4 adjacent blocks have the same group: place a bigger block instead
 
 extract obj_props
-for n in 0..99 {
+for n in 0..401 {
     let x = 1 + n
-    for k in 0..99 {
+    for k in 0..401 {
         let y = 1 + k
-        let c = @complex::new((-2 + (2.4 / 98) * n), (1.2 - (2.4 / 98) * k))
+        let c = @complex::new((-2 + (2.4 / 400) * n), (1.2 - (2.4 / 400) * k))
         let z = @complex::new(0)
         let pixel = obj {
-            OBJ_ID: 279,
-            X: 15 * x,
-            Y: 1500 - 15 * y,
+            OBJ_ID: 917,
+            X: 90 + 1.875 * x,
+            Y: 900 - 1.875 * y,
             COLOR: 1c,
-            SCALING: 0.5,
+            SCALING: 0.25,
             HVS_ENABLED: true,
             GROUPS: 999g,
             }
-        for i in 1..12 {
+        for i in 1..22 {
             if z.abs() > 2 {       
                 $.add(pixel.with(GROUPS, [(i as @group), 999g]))
                 break
             }
-            if i == 11{
+            if i == 21{
                 $.add(pixel.with(HVS, "60a0a0a0a0"))
                 break
             }
             z = z ^ 2 + c
         }
     }
+    $.print("Building: " , (n / 400), "%")
 }
-for h in 1..12 {
-    ->(h as @group).pulse((-180 + (360 / 11) * h), 1, 1, hold = 999, hsv = true)
+for h in 1..16 {
+    ->(h as @group).pulse((-180 + (360 / 13) * h), 1, 1, hold = 999, hsv = true)
+}
+for j in 16..22 {
+    ->(j as @group).pulse(-180, 1, 1, hold = 999, hsv = true)
 }
