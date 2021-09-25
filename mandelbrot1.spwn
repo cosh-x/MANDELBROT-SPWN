@@ -5,38 +5,55 @@
 //Idea: If 4 adjacent blocks have the same group: place a bigger block instead
 
 extract obj_props
-for n in 0..401 {
-    let x = 1 + n
-    for k in 0..401 {
-        let y = 1 + k
-        let c = @complex::new((-2 + (2.4 / 400) * n), (1.2 - (2.4 / 400) * k))
+//RePos: Real coordinate of the center point
+let RePos = -0.8
+//ImPos: Imaginary coordinate of the center point
+let ImPos = 0
+//range: Diameter of the portion you want to render on the complex plane
+let range = 2.5
+//iterations: Max number of calculated iterations
+let iterations = 20
+//res: Resolution of the render in pixels
+let res = 30
+//xpos: X-Position of the bottom left corner of the image in the editor
+let xpos = 30
+//ypos: Y-Position of the bottom left corner of the image in the editor
+let ypos = 30
+//scale: Scale of the pixels in the editor
+let scale = 1
+//group: Group that every pixel should have
+let group = 999g
+//color: Color channel that every pixel should use (Feel free to play around with that color in the editor, as it will affect the hue of every colored pixel)
+let color = 1c
+
+for n in 0..res {
+    for k in 0..res{
+        let c = @complex::new(((RePos - (range / 2)) + (range / (res - 1)) * n), (ImPos - (range / 2) + (range / (res - 1)) * k))
         let z = @complex::new(0)
         let pixel = obj {
             OBJ_ID: 917,
-            X: 90 + 1.875 * x,
-            Y: 900 - 1.875 * y,
-            COLOR: 1c,
-            SCALING: 0.25,
+            X: xpos + (scale * 7.5) * n,
+            Y: ypos + (scale * 7.5) * k,
+            COLOR: color,
+            SCALING: scale,
             HVS_ENABLED: true,
-            GROUPS: 999g,
-            }
-        for i in 1..22 {
+            GROUPS: group,
+        }
+        for i in 0..(iterations + 1) {
             if z.abs() > 2 {       
-                $.add(pixel.with(GROUPS, [(i as @group), 999g]))
+                $.add(pixel.with(GROUPS, [(i as @group), group]))
                 break
             }
-            if i == 21{
+            if i == iterations {
                 $.add(pixel.with(HVS, "60a0a0a0a0"))
                 break
             }
             z = z ^ 2 + c
         }
     }
-    $.print("Building: " , (n / 400), "%")
+    $.print("Building: " , (100 * n / res), "%")
 }
-for h in 1..16 {
-    ->(h as @group).pulse((-180 + (360 / 13) * h), 1, 1, hold = 999, hsv = true)
+for h in 1..(iterations + 1) {
+    ->(h as @group).pulse((-180 + (360 / iterations) * h), 1, 1, hold = 999, hsv = true)
 }
-for j in 16..22 {
-    ->(j as @group).pulse(-180, 1, 1, hold = 999, hsv = true)
-}
+
