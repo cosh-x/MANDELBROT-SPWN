@@ -25,6 +25,8 @@ let scale = 1
 let group = 999g
 //color: Color channel that every pixel should use (Feel free to play around with that color in the editor, as it will affect the hue of every colored pixel)
 let color = 1c
+//layer: Layer of the image in the editor. Default value: 0
+let layer = 0
 
 for n in 0..res {
     for k in 0..res{
@@ -35,6 +37,7 @@ for n in 0..res {
             X: xpos + (scale * 7.5) * n,
             Y: ypos + (scale * 7.5) * k,
             COLOR: color,
+            EDITOR_LAYER_1: layer,
             SCALING: scale,
             HVS_ENABLED: true,
             GROUPS: group,
